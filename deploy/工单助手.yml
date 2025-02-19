@@ -1,0 +1,135 @@
+app:
+  description: 工单助手
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: agent-chat
+  name: 工单助手
+  use_icon_as_answer_icon: false
+kind: app
+model_config:
+  agent_mode:
+    enabled: true
+    max_iteration: 5
+    prompt: null
+    strategy: function_call
+    tools:
+    - enabled: true
+      isDeleted: false
+      notAuthor: false
+      provider_id: 6e7402e8-9816-4a93-b7f0-8e547f58a7d8
+      provider_name: 工单助手_提交工单
+      provider_type: workflow
+      tool_label: 工单助手_提交工单
+      tool_name: createTicket
+      tool_parameters:
+        content: ''
+        openaccountid: ''
+        regionId: ''
+        roomId: ''
+  annotation_reply:
+    enabled: false
+  chat_prompt_config: {}
+  completion_prompt_config: {}
+  dataset_configs:
+    datasets:
+      datasets: []
+    reranking_enable: false
+    retrieval_model: multiple
+    top_k: 4
+  dataset_query_variable: ''
+  external_data_tools: []
+  file_upload:
+    allowed_file_extensions:
+    - .JPG
+    - .JPEG
+    - .PNG
+    - .GIF
+    - .WEBP
+    - .SVG
+    - .MP4
+    - .MOV
+    - .MPEG
+    - .MPGA
+    allowed_file_types: []
+    allowed_file_upload_methods:
+    - remote_url
+    - local_file
+    enabled: false
+    image:
+      detail: high
+      enabled: false
+      number_limits: 3
+      transfer_methods:
+      - remote_url
+      - local_file
+    number_limits: 3
+  model:
+    completion_params:
+      stop: []
+      temperature: 0
+    mode: chat
+    name: qwen-turbo
+    provider: tongyi
+  more_like_this:
+    enabled: false
+  opening_statement: 你好~我是智能工单小助手，有什么我能帮你的吗？
+  pre_prompt: '### 角色
+
+    你是一个工单创建小助手，你能通过与用户对话的形式，引导用户提出需求，并根据对话内容收集创建工单需要的信息。在收集到足够参数后，调用创建工单的工具来自动发起工单。除了创建工单以外的所有问题，你都禁止回答。
+
+    ### 系统预提供的信息
+
+    - openaccountid: {{openaccountid}}
+
+    - roomId: {{roomId}}
+
+    - regionId: {{regionId}}
+
+    ### 需要的信息
+
+    - 用户的输入
+
+    ### 注意事项
+
+    - 只需要向用户询问调用工具参数相关的信息
+
+    - 确保工具所需的每个参数都已从用户处获得，并满足需求
+
+    - 回应时应保持简短，不需要过多解释'
+  prompt_type: simple
+  retriever_resource:
+    enabled: false
+  sensitive_word_avoidance:
+    configs: []
+    enabled: false
+    type: ''
+  speech_to_text:
+    enabled: true
+  suggested_questions:
+  - 我想提交工单
+  suggested_questions_after_answer:
+    enabled: false
+  text_to_speech:
+    enabled: false
+    language: ''
+    voice: ''
+  user_input_form:
+  - text-input:
+      default: ''
+      label: 登录ID
+      max_length: 48
+      required: true
+      variable: openaccountid
+  - text-input:
+      default: ''
+      label: 关联的房间
+      max_length: 48
+      required: true
+      variable: roomId
+  - text-input:
+      default: ''
+      label: 关联项目
+      max_length: 48
+      required: true
+      variable: regionId
+version: 0.1.5

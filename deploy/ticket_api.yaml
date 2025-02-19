@@ -1,0 +1,89 @@
+openapi: 3.1.0
+info:
+  title: 测试
+  description: ''
+  version: 1.0.0
+tags: []
+paths:
+  /serviceorder/api/oauthaccess/aiorder/create:
+    post:
+      summary: 智能工单提交
+      deprecated: false
+      description: ''
+      tags: []
+      parameters: 
+        - name: Authorization
+          in: header
+          description: 授权token
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reportcontent:
+                  type: string
+                  title: 工单内容
+                propregionid:
+                  type: string
+                  title: 楼盘id
+                roomid:
+                  type: string
+                  title: 房间id
+                openaccountid:
+                  type: string
+                  title: openaccountid
+              required:
+                - reportcontent
+                - propregionid
+                - roomid
+                - openaccountid
+            example:
+              reportcontent: 灯泡坏ffffffffff了
+              propregionid: '1112268707189504'
+              roomid: '1134109196972288'
+              openaccountid: '334315767182080'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    title: 返回码
+                  msg:
+                    type: string
+                    title: 返回消息
+                  data:
+                    type: string
+                    title: 工单编号
+                required:
+                  - code
+                  - msg
+                  - data
+              examples:
+                '1':
+                  summary: 成功
+                  value:
+                    code: 0
+                    msg: 成功
+                    data: '1309668963508288'
+          headers: {}
+      security:
+        - bearer: []
+components:
+  schemas: {}
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+servers:
+  - url: http://192.168.3.18:8010
+    description: 本地测试
+security: []
