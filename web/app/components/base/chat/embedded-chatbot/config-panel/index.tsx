@@ -26,6 +26,9 @@ const ConfigPanel = () => {
   const site = appData?.site
   const themeBuilder = useThemeContext()
 
+  // console.log('[Config Panel]', 'init')
+  // handleStartChat();
+
   return (
     <div className='flex flex-col max-h-[80%] w-full max-w-[720px]'>
       <div
@@ -72,7 +75,7 @@ const ConfigPanel = () => {
               <>
                 <Star06 className='mr-1 mt-1 w-4 h-4 text-indigo-600' />
                 <div className='grow py-[3px] text-[13px] text-indigo-600 leading-[18px] font-medium'>
-                  {t('share.chat.configStatusDes')}
+                  {'在这里确认您的信息'}
                 </div>
                 <Button
                   styleCss={CssTransform(themeBuilder.theme?.backgroundButtonDefaultColorStyle ?? '')}
@@ -82,7 +85,7 @@ const ConfigPanel = () => {
                   onClick={() => setCollapsed(false)}
                 >
                   <Edit02 className='mr-1 w-3 h-3' />
-                  {t('common.operation.edit')}
+                  {'查看'}
                 </Button>
               </>
             )
@@ -92,7 +95,7 @@ const ConfigPanel = () => {
               <>
                 <Star06 className='mr-1 mt-1 w-4 h-4 text-indigo-600' />
                 <div className='grow py-[3px] text-[13px] text-indigo-600 leading-[18px] font-medium'>
-                  {t('share.chat.privatePromptConfigTitle')}
+                  {'预留信息'}
                 </div>
               </>
             )

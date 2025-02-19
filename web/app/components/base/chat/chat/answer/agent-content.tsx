@@ -4,11 +4,10 @@ import type {
   ChatItem,
 } from '../../types'
 import { Markdown } from '@/app/components/base/markdown'
-import Thought from '@/app/components/base/chat/chat/thought'
 import { FileList } from '@/app/components/base/file-uploader'
 import { getProcessedFilesFromResponse } from '@/app/components/base/file-uploader/utils'
 
-interface AgentContentProps {
+type AgentContentProps = {
   item: ChatItem
   responding?: boolean
 }
@@ -33,12 +32,13 @@ const AgentContent: FC<AgentContentProps> = ({
           )}
           {/* {item.tool} */}
           {/* perhaps not use tool */}
-          {!!thought.tool && (
+          {/* todo-mark 这个代码块就是agent的思考或者工具调用过程 */}
+          {/* {!!thought.tool && (
             <Thought
               thought={thought}
               isFinished={!!thought.observation || !responding}
             />
-          )}
+          )} */}
 
           {
             !!thought.message_files?.length && (

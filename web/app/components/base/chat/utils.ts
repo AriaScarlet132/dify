@@ -2,12 +2,39 @@ import { UUID_NIL } from './constants'
 import type { IChatItem } from './chat/type'
 import type { ChatItem, ChatItemInTree } from './types'
 
-async function decodeBase64AndDecompress(base64String: string) {
+// async function decodeBase64AndDecompress(base64String: string) {
+//   const binaryString = atob(base64String)
+//   const compressedUint8Array = Uint8Array.from(binaryString, char => char.charCodeAt(0))
+//   const decompressedStream = new Response(compressedUint8Array).body?.pipeThrough(new DecompressionStream('gzip'))
+//   const decompressedArrayBuffer = await new Response(decompressedStream).arrayBuffer()
+//   return new TextDecoder().decode(decompressedArrayBuffer)
+// }
+
+async function decodeBase64AndDecompress(base64String: string): Promise<string> {
+  // Step 1: 将 Base64 字符串解码为二进制字符串
   const binaryString = atob(base64String)
+
+  // Step 2: 将二进制字符串转换为 Uint8Array
   const compressedUint8Array = Uint8Array.from(binaryString, char => char.charCodeAt(0))
-  const decompressedStream = new Response(compressedUint8Array).body?.pipeThrough(new DecompressionStream('gzip'))
-  const decompressedArrayBuffer = await new Response(decompressedStream).arrayBuffer()
-  return new TextDecoder().decode(decompressedArrayBuffer)
+
+  // Step 3: 尝试解压缩数据
+  try {
+    // 创建一个 Response 对象并尝试解压缩
+    const decompressedStream = new Response(compressedUint8Array)
+      .body?.pipeThrough(new DecompressionStream('gzip'))
+
+    if (!decompressedStream)
+      throw new Error('Failed to create decompressed stream')
+
+    // 将解压缩后的流转换为 ArrayBuffer
+    const decompressedArrayBuffer = await new Response(decompressedStream).arrayBuffer()
+    return new TextDecoder().decode(decompressedArrayBuffer)
+  }
+  catch (error) {
+    // 如果解压缩失败，可能是数据未经过 gzip 压缩，直接解码为文本
+    console.warn('Decompression failed. Assuming data is not compressed.', error)
+    return new TextDecoder().decode(compressedUint8Array)
+  }
 }
 
 function getProcessedInputsFromUrlParams(): Record<string, any> {

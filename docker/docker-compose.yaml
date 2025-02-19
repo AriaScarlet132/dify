@@ -23,7 +23,7 @@ x-shared-env: &shared-api-worker-env
   INIT_PASSWORD: ${INIT_PASSWORD:-}
   DEPLOY_ENV: ${DEPLOY_ENV:-PRODUCTION}
   CHECK_UPDATE_URL: ${CHECK_UPDATE_URL:-https://updates.dify.ai}
-  OPENAI_API_BASE: ${OPENAI_API_BASE:-https://api.openai.com/v1}
+  OPENAI_API_BASE: ${OPENAI_API_BASE:-https://api.openfai.com/v1}
   MIGRATION_ENABLED: ${MIGRATION_ENABLED:-true}
   FILES_ACCESS_TIMEOUT: ${FILES_ACCESS_TIMEOUT:-300}
   ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES:-60}
@@ -414,7 +414,7 @@ x-shared-env: &shared-api-worker-env
 services:
   # API service
   api:
-    image: langgenius/dify-api:1.0.0
+    image: langgenius/dify-api:0.15.3
     restart: always
     environment:
       # Use the shared environment variables.
@@ -439,7 +439,7 @@ services:
   # worker service
   # The Celery worker for processing the queue.
   worker:
-    image: langgenius/dify-api:1.0.0
+    image: langgenius/dify-api:0.15.3
     restart: always
     environment:
       # Use the shared environment variables.
@@ -463,7 +463,7 @@ services:
 
   # Frontend web application.
   web:
-    image: langgenius/dify-web:1.0.0
+    image: langgenius/dify-web:0.15.3
     restart: always
     environment:
       CONSOLE_API_URL: ${CONSOLE_API_URL:-}

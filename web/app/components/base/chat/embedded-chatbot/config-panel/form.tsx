@@ -1,10 +1,11 @@
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useEmbeddedChatbotContext } from '../context'
 import Input from './form-input'
 import { PortalSelect } from '@/app/components/base/select'
 import { InputVarType } from '@/app/components/workflow/types'
 import { FileUploaderInAttachmentWrapper } from '@/app/components/base/file-uploader'
+import { useSearchParams } from 'next/navigation'
 
 const Form = () => {
   const { t } = useTranslation()
@@ -15,7 +16,23 @@ const Form = () => {
     newConversationInputsRef,
     handleNewConversationInputsChange,
     isMobile,
+    handleStartChat,
   } = useEmbeddedChatbotContext()
+
+  const searchParams = useSearchParams()
+  const inputs: Record<string, string> = {
+    openaccountid: searchParams.get('openaccountid') || '',
+    roomId: searchParams.get('roomId') || '',
+    regionId: searchParams.get('regionId') || '',
+  }
+  Object.keys(inputs).forEach((key) => {
+    console.log('[Rendering Form]:', key, inputs[key])
+    newConversationInputs[key] = inputs[key]
+  })
+
+  useEffect(() => {
+    handleStartChat()
+  }, [])
 
   const handleFormChange = useCallback((variable: string, value: any) => {
     handleNewConversationInputsChange({
