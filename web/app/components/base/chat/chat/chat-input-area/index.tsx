@@ -3,6 +3,9 @@ import {
   useRef,
   useState,
 } from 'react'
+import {
+  RiMicLine,
+} from '@remixicon/react'
 import Textarea from 'rc-textarea'
 import { useTranslation } from 'react-i18next'
 import Recorder from 'js-audio-recorder'
@@ -10,6 +13,7 @@ import type {
   EnableType,
   OnSend,
 } from '../../types'
+import Button from '@/app/components/base/button'
 import type { Theme } from '../../embedded-chatbot/theme/theme-context'
 import type { InputForm } from '../type'
 import { useCheckInputsForms } from '../check-input-forms-hooks'
@@ -143,8 +147,8 @@ const ChatInputArea = ({
       ref={holdSpaceRef}
       fileConfig={visionConfig}
       speechToTextConfig={speechToTextConfig}
-      onShowVoiceInput={handleShowVoiceInput}
       onSend={handleSend}
+
       theme={theme}
     />
   )
@@ -153,17 +157,29 @@ const ChatInputArea = ({
     <>
       <div
         className={cn(
-          'relative pb-[9px] bg-components-panel-bg-blur border border-components-chat-input-border rounded-xl shadow-md z-10',
+          'relative py-[9px] bg-components-panel-bg-blur border border-components-chat-input-border rounded-xl shadow-md  z-10 flex items-center',
           isDragActive && 'border border-dashed border-components-option-card-option-selected-border',
         )}
       >
-        <div className='relative px-[9px] pt-[9px] max-h-[158px] overflow-x-hidden overflow-y-auto'>
+
+        <div className='relative pl-[9px] flex max-h-[158px] overflow-x-hidden overflow-y-auto flex-1'>
           <FileListInChatInput fileConfig={visionConfig!} />
           <div
             ref={wrapperRef}
-            className='flex items-center justify-between'
+            className='flex items-end justify-between gap-1 flex-1'
           >
-            <div className='flex items-center relative grow w-full'>
+            {
+              speechToTextConfig?.enabled && (
+                <Button
+                  className='px-2 flex items-center gap-2 '
+                  onClick={handleShowVoiceInput}
+                >
+                  <RiMicLine className='w-5 h-5 text-gray-600' />
+                </Button>
+              )
+            }
+
+            <div className='flex items-end relative grow flex-1 '>
               <div
                 ref={textValueRef}
                 className='absolute w-auto h-auto p-1 leading-6 body-lg-regular pointer-events-none whitespace-pre invisible'
@@ -173,7 +189,7 @@ const ChatInputArea = ({
               <Textarea
                 ref={textareaRef}
                 className={cn(
-                  'p-1 w-full leading-6 body-lg-regular text-text-tertiary bg-transparent outline-none',
+                  'p-1 w-full leading-6 body-lg-regular text-text-tertiary outline-none bg-gray-100  rounded  overflow-hidden border border-gary-200',
                 )}
                 placeholder={t('common.chat.inputPlaceholder') || ''}
                 autoFocus
@@ -204,12 +220,13 @@ const ChatInputArea = ({
               />
             )
           }
+          {
+            isMultipleLine && (
+              <div className='pr-[9px] flex items-end justify-center'>{operation}</div>
+            )
+          }
         </div>
-        {
-          isMultipleLine && (
-            <div className='px-[9px]'>{operation}</div>
-          )
-        }
+
       </div>
       {showFeatureBar && <FeatureBar showFileUpload={showFileUpload} disabled={featureBarDisabled} onFeatureBarClick={onFeatureBarClick} />}
     </>
