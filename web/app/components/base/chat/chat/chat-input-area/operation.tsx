@@ -55,7 +55,7 @@ const Operation = forwardRef<HTMLDivElement, OperationProps>(({
             )
           } */}
         <Button
-          className='px-2 w-8'
+          className='px-2 w-8 !min-h-[34px]'
           variant='primary'
           onClick={onSend}
           style={

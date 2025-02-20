@@ -1,16 +1,16 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import React, { forwardRef, useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams, usePathname } from 'next/navigation'
 import {
   RiCloseLine,
   RiLoader2Line,
 } from '@remixicon/react'
+import Button from '@/app/components/base/button'
 import Recorder from 'js-audio-recorder'
 import { useRafInterval } from 'ahooks'
 import { convertToMp3 } from './utils'
 import s from './index.module.css'
 import cn from '@/utils/classnames'
-import { StopCircle } from '@/app/components/base/icons/src/vender/solid/mediaAndDevices'
 import { audioToText } from '@/service/share'
 
 type VoiceInputTypes = {
@@ -19,11 +19,11 @@ type VoiceInputTypes = {
   wordTimestamps?: string
 }
 
-const VoiceInput = ({
+const VoiceInput = forwardRef(({
   onCancel,
   onConverted,
   wordTimestamps,
-}: VoiceInputTypes) => {
+}: VoiceInputTypes, ref) => {
   const { t } = useTranslation()
   const recorder = useRef(new Recorder({
     sampleBits: 16,
@@ -49,8 +49,8 @@ const VoiceInput = ({
     const ctx = ctxRef.current!
     const dataUnit8Array = recorder.current.getRecordAnalyseData()
     const dataArray = [].slice.call(dataUnit8Array)
-    const lineLength = parseInt(`${canvas.width / 3}`)
-    const gap = parseInt(`${1024 / lineLength}`)
+    const lineLength = Number.parseInt(`${canvas.width / 3}`)
+    const gap = Number.parseInt(`${1024 / lineLength}`)
 
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     ctx.beginPath()
@@ -77,6 +77,7 @@ const VoiceInput = ({
     ctx.closePath()
   }, [])
   const handleStopRecorder = useCallback(async () => {
+    console.log('chufa')
     clearInterval()
     setStartRecord(false)
     setStartConvert(true)
@@ -161,15 +162,15 @@ const VoiceInput = ({
     }
   }, [])
 
-  const minutes = parseInt(`${parseInt(`${originDuration}`) / 60}`)
-  const seconds = parseInt(`${originDuration}`) % 60
+  const minutes = Number.parseInt(`${Number.parseInt(`${originDuration}`) / 60}`)
+  const seconds = Number.parseInt(`${originDuration}`) % 60
 
   return (
-    <div className={cn(s.wrapper, 'absolute inset-0 rounded-xl')}>
-      <div className='absolute inset-[1.5px] flex items-center pl-[14.5px] pr-[6.5px] py-[14px] bg-primary-25 rounded-[10.5px] overflow-hidden'>
-        <canvas id='voice-input-record' className='absolute left-0 bottom-0 w-full h-4' />
+    <div className={cn(s.wrapper, 'absolute inset-0 rounded-xl overflow-hidden mx-2')}>
+      <div className='absolute inset-[1.5px] pl-3 flex items-center  bg-primary-25 rounded-[10.5px] overflow-hidden'>
+        <canvas id='voice-input-record' className='absolute left-0 bottom-0 w-full ' />
         {
-          startConvert && <RiLoader2Line className='animate-spin mr-2 w-4 h-4 text-primary-700' />
+          startConvert && <RiLoader2Line className='animate-spin mr-2 w-6 h-6 text-primary-700' />
         }
         <div className='grow'>
           {
@@ -187,30 +188,36 @@ const VoiceInput = ({
             )
           }
         </div>
-        {
-          startRecord && (
-            <div
-              className='flex justify-center items-center mr-1 w-8 h-8 hover:bg-primary-100 rounded-lg  cursor-pointer'
-              onClick={handleStopRecorder}
-            >
-              <StopCircle className='w-5 h-5 text-primary-600' />
-            </div>
-          )
-        }
+
         {
           startConvert && (
             <div
               className='flex justify-center items-center mr-1 w-8 h-8 hover:bg-gray-200 rounded-lg  cursor-pointer'
               onClick={onCancel}
             >
-              <RiCloseLine className='w-4 h-4 text-gray-500' />
+              <RiCloseLine className='w-6 h-6 text-gray-500' />
             </div>
           )
         }
+
         <div className={`w-[45px] pl-1 text-xs font-medium ${originDuration > 500 ? 'text-[#F04438]' : 'text-gray-700'}`}>{`0${minutes.toFixed(0)}:${seconds >= 10 ? seconds : `0${seconds}`}`}</div>
+
+        {
+          startRecord && (
+
+            <Button
+              className='mx-2 px-2 z-20 flex items-center'
+              variant='primary'
+              onClick={handleStopRecorder}
+            >
+              <RiCloseLine className='w-6 h-6 text-white' />
+              结束
+            </Button>
+          )
+        }
       </div>
     </div>
   )
-}
+})
 
 export default VoiceInput
