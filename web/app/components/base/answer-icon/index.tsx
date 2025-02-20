@@ -5,7 +5,7 @@ import { init } from 'emoji-mart'
 import data from '@emoji-mart/data'
 import classNames from '@/utils/classnames'
 import type { AppIconType } from '@/types/app'
-import icon_jy from './jinyuan.png'
+import icon_jy_1 from './jinyuan-1.jpg'
 
 init({ data })
 
@@ -39,7 +39,7 @@ const AnswerIcon: FC<AnswerIconProps> = ({
     style={{ background: background || '#D5F5F6' }}
   >
     {true
-      && <img src={icon_jy.src} className="w-full h-full rounded-full" alt="answer icon" />
+      && <img src={icon_jy_1.src} className="w-full h-full rounded-full" alt="answer icon" />
     }
   </div>
 }
