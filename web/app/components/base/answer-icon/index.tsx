@@ -5,6 +5,7 @@ import { init } from 'emoji-mart'
 import data from '@emoji-mart/data'
 import classNames from '@/utils/classnames'
 import type { AppIconType } from '@/types/app'
+import icon_jy from './jinyuan.png'
 
 init({ data })
 
@@ -37,9 +38,8 @@ const AnswerIcon: FC<AnswerIconProps> = ({
     className={wrapperClassName}
     style={{ background: background || '#D5F5F6' }}
   >
-    {isValidImageIcon
-      ? <img src={imageUrl} className="w-full h-full rounded-full" alt="answer icon" />
-      : (icon && icon !== '') ? <em-emoji id={icon} /> : <em-emoji id='🤖' />
+    {true
+      && <img src={icon_jy.src} className="w-full h-full rounded-full" alt="answer icon" />
     }
   </div>
 }

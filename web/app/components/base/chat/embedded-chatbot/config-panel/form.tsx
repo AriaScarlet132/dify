@@ -5,7 +5,6 @@ import Input from './form-input'
 import { PortalSelect } from '@/app/components/base/select'
 import { InputVarType } from '@/app/components/workflow/types'
 import { FileUploaderInAttachmentWrapper } from '@/app/components/base/file-uploader'
-import { useSearchParams } from 'next/navigation'
 
 const Form = () => {
   const { t } = useTranslation()
@@ -19,15 +18,16 @@ const Form = () => {
     handleStartChat,
   } = useEmbeddedChatbotContext()
 
-  const searchParams = useSearchParams()
-  const inputs: Record<string, string> = {
-    openaccountid: searchParams.get('openaccountid') || '',
-    roomId: searchParams.get('roomId') || '',
-    regionId: searchParams.get('regionId') || '',
-  }
-  Object.keys(inputs).forEach((key) => {
-    console.log('[Rendering Form]:', key, inputs[key])
-    newConversationInputs[key] = inputs[key]
+  const url = window.location.href
+  const params: Record<string, string> = {}
+  url.split('?')[1]?.split('&').forEach((item) => {
+    const keyVal = item.split('=')
+    params[keyVal[0]] = keyVal[1]
+  })
+
+  Object.keys(params).forEach((key) => {
+    console.log('[Rendering Form]:', key, params[key])
+    newConversationInputs[key] = params[key]
   })
 
   useEffect(() => {
